@@ -34,7 +34,8 @@ export const handleGraphQLScalarType: GraphQLTypeHandler = (
     namedImports: [graphQLScalarType],
     emitLegacyCommonJSImports,
   });
-  const variableStatement = `export const ${resolverName} = new ${graphQLScalarType}({
+  const variableStatement = `
+  export const ${resolverName} = new ${graphQLScalarType}({
     name: '${resolverName}',
     description: '${resolverName} description',
     serialize: (value) => {
@@ -46,13 +47,13 @@ export const handleGraphQLScalarType: GraphQLTypeHandler = (
     parseLiteral: (ast) => {
       /* Implement logic to parse input that was sent to the server as literal values (string, number, or boolean) */
     },
-  });`;
+  });`.replace(/^ {2}/gm, '');
 
   result.files[fieldFilePath] = {
     __filetype: 'scalarResolver',
     content: `
     ${resolverTypeImportDeclaration}
-    ${variableStatement}`,
+    ${variableStatement}`.replace(/^\s*\n/gm, '').replace(/^ {4}/m, ''),
     mainImportIdentifier: resolverName,
     meta: {
       moduleName,

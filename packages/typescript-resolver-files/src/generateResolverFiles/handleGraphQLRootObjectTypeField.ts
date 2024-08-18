@@ -59,11 +59,13 @@ export const handleGraphQLRootObjectTypeField: GraphQLTypeHandler<
 
   const resolverTypeString = `NonNullable<${resolversTypeMeta.typeString}>`;
 
-  let variableStatement = `export const ${resolverName}: ${resolverTypeString} = async (_parent, _arg, _ctx) => { ${suggestion} };`;
+  let variableStatement = `export const ${resolverName}: ${resolverTypeString} = async (_parent, _arg, _ctx) => {
+    ${suggestion}
+  };`.replace(/^ {2}/gm, '');
   if (belongsToRootObject === 'Subscription') {
     variableStatement = `export const ${resolverName}: ${resolverTypeString} = {
       subscribe: async (_parent, _arg, _ctx) => { ${suggestion} },
-    }`;
+    }`.replace(/^ {4}/gm, '');
   }
 
   const resolverTypeImportDeclaration = printImportLine({
@@ -77,8 +79,8 @@ export const handleGraphQLRootObjectTypeField: GraphQLTypeHandler<
   result.files[fieldFilePath] = {
     __filetype: 'rootObjectTypeFieldResolver',
     content: `
-        ${resolverTypeImportDeclaration}
-        ${variableStatement}`,
+    ${resolverTypeImportDeclaration}
+    ${variableStatement}`.replace(/^\s*\n/gm, '').replace(/^ {4}/gm, ''),
     mainImportIdentifier: resolverName,
     meta: {
       moduleName,

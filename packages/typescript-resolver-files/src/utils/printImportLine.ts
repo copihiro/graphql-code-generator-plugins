@@ -40,7 +40,7 @@ export function printImportLine({
     hasDefaultImport && hasNamedImports ? ',' : ''
   } ${namedImportsString} from '${normalizeModuleExtensionForImport(
     module
-  )}${fileExt}';`;
+  )}${fileExt}';`.replace(/^\s+/gm, '').replace(/ {2,}/g, ' ');
 }
 
 const normalizeModuleExtensionForImport = (module: string): string => {

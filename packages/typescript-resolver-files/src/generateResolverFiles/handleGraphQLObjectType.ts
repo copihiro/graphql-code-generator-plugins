@@ -97,9 +97,11 @@ export const handleGraphQLObjectType: GraphQLTypeHandler<
       }, {})
     : allResolversToGenerate;
 
-  const variableStatement = `${forcedGenerationWarning}export const ${resolverName}: ${typeString} = {
+  const variableStatement = `
+  ${forcedGenerationWarning}
+  export const ${resolverName}: ${typeString} = {
     /* Implement ${resolverName} resolver logic here */
-  };`;
+  };`.replace(/^ {2}/gm, '');
 
   const resolverTypeImportDeclaration = printImportLine({
     isTypeImport: true,
@@ -113,7 +115,7 @@ export const handleGraphQLObjectType: GraphQLTypeHandler<
     __filetype: 'objectType',
     content: `
     ${resolverTypeImportDeclaration}
-    ${variableStatement}`,
+    ${variableStatement}`.replace(/^\s*\n/gm, '').replace(/^ {4}/m, ''),
     mainImportIdentifier: resolverName,
     meta: {
       moduleName,

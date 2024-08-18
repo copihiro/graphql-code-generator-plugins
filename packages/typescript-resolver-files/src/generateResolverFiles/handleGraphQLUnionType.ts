@@ -33,13 +33,16 @@ export const handleGraphQLUnionType: GraphQLTypeHandler = (
     namedImports: [resolversTypeMeta.typeNamedImport],
     emitLegacyCommonJSImports,
   });
-  const variableStatement = `export const ${resolverName}: ${resolversTypeMeta.typeString} = { /* Implement ${resolverName} union logic here */ };`;
+  const variableStatement = `
+  export const ${resolverName}: ${resolversTypeMeta.typeString} = {
+    /* Implement ${resolverName} union logic here */
+  };`.replace(/^ {2}/gm, '');
 
   result.files[fieldFilePath] = {
     __filetype: 'unionResolver',
     content: `
     ${resolverTypeImportDeclaration}
-    ${variableStatement}`,
+    ${variableStatement}`.replace(/^\s*\n/gm, '').replace(/^ {4}/m, ''),
     mainImportIdentifier: resolverName,
     meta: {
       moduleName,

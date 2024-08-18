@@ -35,13 +35,16 @@ export const handleGraphQLInterfaceType: GraphQLTypeHandler = (
     namedImports: [resolversTypeMeta.typeNamedImport],
     emitLegacyCommonJSImports,
   });
-  const variableStatement = `export const ${resolverName}: ${resolverTypeString} = { /* Implement ${resolverName} interface logic here */ };`;
+  const variableStatement = `
+  export const ${resolverName}: ${resolverTypeString} = {
+    /* Implement ${resolverName} interface logic here */
+  };`.replace(/^ {2}/gm, '');
 
   result.files[fieldFilePath] = {
     __filetype: 'interfaceResolver',
     content: `
     ${resolverTypeImportDeclaration}
-    ${variableStatement}`,
+    ${variableStatement}`.replace(/^\s*\n/gm, '').replace(/^ {4}/m, ''),
     mainImportIdentifier: resolverName,
     meta: {
       moduleName,

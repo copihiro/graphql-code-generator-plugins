@@ -62,13 +62,13 @@ export const handleGraphQLEnumType: GraphQLTypeHandler<
   ${forcedGenerationWarning}
   export const ${resolverName}: ${resolversTypeMeta.typeString} = {
     ${allowedValues.map((value) => `${value}: '${value}'`).join(',\n')}
-  }`.replace(/^ {2}/gm, '');
+  }`.replace(/^\s*\n/gm, '').replace(/^ {2}/gm, '');
 
   result.files[fieldFilePath] = {
     __filetype: 'enumResolver',
     content: `
-    ${resolverTypeImportDeclaration}
-    ${variableStatement}`.replace(/^\s*\n/gm, '').replace(/^ {4}/m, ''),
+    ${resolverTypeImportDeclaration}`.replace(/^\s*\n/gm, '').replace(/^ {4}/gm, '')
+    .concat(variableStatement),
     mainImportIdentifier: resolverName,
     meta: {
       moduleName,

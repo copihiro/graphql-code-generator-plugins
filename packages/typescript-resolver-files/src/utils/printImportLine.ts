@@ -36,11 +36,12 @@ export function printImportLine({
     fileExt = emitLegacyCommonJSImports || !isFile ? '' : '.js';
   }
 
-  return `import ${typeImportKeyword} ${defaultImport || ''} ${
+  return `
+  import ${typeImportKeyword} ${defaultImport || ''} ${
     hasDefaultImport && hasNamedImports ? ',' : ''
   } ${namedImportsString} from '${normalizeModuleExtensionForImport(
     module
-  )}${fileExt}';`.replace(/^\s+/gm, '').replace(/ {2,}/g, ' ');
+  )}${fileExt}';`.replace(/^\s+/gm, '').replace(/ {2,}/gm, ' ');
 }
 
 const normalizeModuleExtensionForImport = (module: string): string => {

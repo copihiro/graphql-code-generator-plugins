@@ -47,13 +47,13 @@ export const handleGraphQLScalarType: GraphQLTypeHandler = (
     parseLiteral: (ast) => {
       /* Implement logic to parse input that was sent to the server as literal values (string, number, or boolean) */
     },
-  });`.replace(/^ {2}/gm, '');
+  });`.replace(/^\s*\n/gm, '').replace(/^ {2}/gm, '');
 
   result.files[fieldFilePath] = {
     __filetype: 'scalarResolver',
     content: `
-    ${resolverTypeImportDeclaration}
-    ${variableStatement}`.replace(/^\s*\n/gm, '').replace(/^ {4}/m, ''),
+    ${resolverTypeImportDeclaration}`.replace(/^\s*\n/gm, '').replace(/^ {4}/gm, '')
+    .concat(variableStatement),
     mainImportIdentifier: resolverName,
     meta: {
       moduleName,
